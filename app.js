@@ -8,10 +8,14 @@ const passport = require('passport')
 // 載入設定檔，要寫在 express-session 以後
 const usePassport = require('./config/passport')
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const routes = require('./routes')
 
 const app = express()
-const PORT = 3000
+const PORT = process.env.PORT
 
 const hbs = create({
   // layoutsDir: `/views/layouts`,
@@ -25,7 +29,7 @@ app.set('view engine', 'hbs')
 app.set('views', './views')
 
 app.use(session({
-  secret: 'ThisIsMySecret',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }))
